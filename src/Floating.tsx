@@ -21,14 +21,22 @@ export type PayloadAction<
       });
 
 const FloatingStateContext = React.createContext<{} | null>(null);
-function reducer(state = {}, action: PayloadAction<{}>) {
+function reducer(
+  state = {
+    items: {},
+    item2: [],
+  },
+  action: PayloadAction<{}>
+) {
   switch (action.type) {
     case "add": {
       state = {
+        ...state,
         items: {
           ...state.items,
-          ...action.payload.component,
+          //   ...action.payload.component,
         },
+        item2: [...state.item2, action.payload.component],
       };
 
       break;
@@ -77,6 +85,13 @@ const initialState = {
       },
     },
   },
+  item2: [
+    (props) => (
+      <div style={{ backgroundColor: "green", width: "100px" }} {...props}>
+        this is div 123123
+      </div>
+    ),
+  ],
 };
 
 export function FloatingProvider({ children }: { children?: React.ReactNode }) {
@@ -87,10 +102,10 @@ export function FloatingProvider({ children }: { children?: React.ReactNode }) {
       <>{children}</>
       <>
         {ReactDOM.createPortal(
-          Object.entries(state.items).map(([key, item]) => {
+          state.item2.map((render, key) => {
             return (
               <Floating className="floatTab" key={key} name={String(key)}>
-                {item.render()}
+                {render()}
               </Floating>
             );
           }),
@@ -188,7 +203,7 @@ export function Floating(props: { children: React.ReactNode; name: string }) {
   );
 }
 
-export function withFloating(Component, options) {
+export function withFloating(Component: React.FC, options = {}) {
   const { state, dispatch } = useContext(FloatingStateContext);
 
   useEffect(() => {
@@ -196,7 +211,7 @@ export function withFloating(Component, options) {
     dispatch({
       type: "add",
       payload: {
-        Component,
+        component: Component,
         options,
       },
     });

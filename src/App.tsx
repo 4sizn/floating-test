@@ -28,14 +28,23 @@ function SubApp() {
       {withFloating((props) => {
         return (
           <div style={{ backgroundColor: "red", width: "100px" }} {...props}>
-            this is div 123123
+            this is div 123123d
           </div>
         );
       })}
-      {/* {withFloating(MiniChat)}
-      {withFloating(MiniChat)}
-      {withFloating(MiniChat)}
-      {withFloating(MiniChat)} */}
+      {withFloating(() => (
+        <button>asdfasdf</button>
+      ))}
+
+      {withFloating(() => (
+        <div>MiniChat</div>
+      ))}
+
+      {withFloating(() => (
+        <div>
+          <MiniChat />
+        </div>
+      ))}
     </>
   );
 }
