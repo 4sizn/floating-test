@@ -20,12 +20,31 @@ export type PayloadAction<
         error: E;
       });
 
-const FloatingStateContext = React.createContext<{} | null>(null);
+type FloatingStateContextType = {
+  state: FloatingState;
+  dispatch: React.Dispatch<PayloadAction<FloatingItemState>>;
+};
+
+const FloatingStateContext =
+  React.createContext<FloatingStateContextType | null>(null);
+
+type FloatingItemState = {
+  render: (props: any) => React.ReactNode;
+  options: {
+    resize?: boolean;
+    barComponent?: (props: any) => React.ReactNode;
+  };
+};
+
+type FloatingState = {
+  item2: FloatingItemState[];
+};
+
 function reducer(
   state = {
     item2: [],
   },
-  action: PayloadAction<{}>
+  action: PayloadAction<FloatingItemState>
 ) {
   switch (action.type) {
     case "add": {
