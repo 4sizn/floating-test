@@ -28,12 +28,14 @@ type FloatingStateContextType = {
 const FloatingStateContext =
   React.createContext<FloatingStateContextType | null>(null);
 
+type FloatingItemOptions = {
+  resize?: boolean;
+  barComponent?: (props: any) => React.ReactNode;
+};
+
 type FloatingItemState = {
   render: (props: any) => React.ReactNode;
-  options: {
-    resize?: boolean;
-    barComponent?: (props: any) => React.ReactNode;
-  };
+  options: FloatingItemOptions;
 };
 
 type FloatingState = {
@@ -50,7 +52,7 @@ function reducer(
     case "add": {
       state = {
         ...state,
-        item2: [...state.item2, action.payload.component],
+        item2: [...state.item2, action.payload.render],
       };
 
       break;
@@ -87,10 +89,10 @@ export function FloatingProvider({ children }: { children?: React.ReactNode }) {
       <>{children}</>
       <>
         {ReactDOM.createPortal(
-          state.item2.map((render, key) => {
+          state.item2.map((item, key) => {
             return (
               <Floating className="floatTab" key={key} name={String(key)}>
-                {render()}
+                {item()}
               </Floating>
             );
           }),
@@ -101,7 +103,11 @@ export function FloatingProvider({ children }: { children?: React.ReactNode }) {
   );
 }
 
-export function Floating(props: { children: React.ReactNode; name: string }) {
+export function Floating(props: {
+  children: React.ReactNode;
+  name: string;
+  style?: React.CSSProperties;
+}) {
   var posP = [0, 0],
     //마우스 좌표
     posM = [0, 0];
@@ -156,7 +162,7 @@ export function Floating(props: { children: React.ReactNode; name: string }) {
     console.log("toolClick", props);
   };
 
-  const toolDrag: typeof document.onmousedown = (e) => {
+  const toolDrag: React.MouseEventHandler<HTMLDivElement> = (e) => {
     e = e || window.event;
     e.preventDefault();
     posM = [e.clientY, e.clientX];
@@ -188,7 +194,10 @@ export function Floating(props: { children: React.ReactNode; name: string }) {
   );
 }
 
-export function withFloating(Component: React.FC, options = {}) {
+export function withFloating(
+  Component: React.FC,
+  options: FloatingItemOptions = {}
+) {
   const { state, dispatch } = useContext(FloatingStateContext);
 
   useEffect(() => {
@@ -196,7 +205,7 @@ export function withFloating(Component: React.FC, options = {}) {
     dispatch({
       type: "add",
       payload: {
-        component: Component,
+        render: Component,
         options,
       },
     });
