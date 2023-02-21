@@ -23,7 +23,6 @@ export type PayloadAction<
 const FloatingStateContext = React.createContext<{} | null>(null);
 function reducer(
   state = {
-    items: {},
     item2: [],
   },
   action: PayloadAction<{}>
@@ -32,10 +31,6 @@ function reducer(
     case "add": {
       state = {
         ...state,
-        items: {
-          ...state.items,
-          //   ...action.payload.component,
-        },
         item2: [...state.item2, action.payload.component],
       };
 
@@ -56,35 +51,6 @@ function reducer(
 }
 
 const initialState = {
-  items: {
-    0: {
-      render: function (props) {
-        return (
-          <div style={{ backgroundColor: "red", width: "100px" }} {...props}>
-            this is div 123123
-          </div>
-        );
-      },
-    },
-    1: {
-      render: function (props) {
-        return (
-          <div style={{ backgroundColor: "blue", width: "100px" }} {...props}>
-            this is div 123123
-          </div>
-        );
-      },
-    },
-    2: {
-      render: function (props) {
-        return (
-          <div style={{ backgroundColor: "green", width: "100px" }} {...props}>
-            this is div 123123
-          </div>
-        );
-      },
-    },
-  },
   item2: [
     (props) => (
       <div style={{ backgroundColor: "green", width: "100px" }} {...props}>
