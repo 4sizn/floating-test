@@ -22,7 +22,10 @@ export type PayloadAction<
 
 type FloatingStateContextType = {
   state: FloatingState;
-  dispatch: React.Dispatch<PayloadAction<FloatingItemState>>;
+  dispatch: React.Dispatch<
+    | PayloadAction<FloatingItemState, "add">
+    | PayloadAction<{ name: string }, "front">
+  >;
 };
 
 const FloatingStateContext =
@@ -34,7 +37,7 @@ type FloatingItemOptions = {
 };
 
 type FloatingItemState = {
-  render: (props: any) => React.ReactNode;
+  render: (props?: any) => React.ReactNode;
   options: FloatingItemOptions;
 };
 
@@ -43,7 +46,7 @@ type FloatingState = {
 };
 
 function reducer(
-  state = {
+  state: FloatingState = {
     item2: [],
   },
   action: PayloadAction<FloatingItemState>
@@ -52,7 +55,7 @@ function reducer(
     case "add": {
       state = {
         ...state,
-        item2: [...state.item2, action.payload.render],
+        item2: [...state.item2, action.payload],
       };
 
       break;
@@ -72,13 +75,7 @@ function reducer(
 }
 
 const initialState = {
-  item2: [
-    (props) => (
-      <div style={{ backgroundColor: "green", width: "100px" }} {...props}>
-        this is div 123123
-      </div>
-    ),
-  ],
+  item2: [],
 };
 
 export function FloatingProvider({ children }: { children?: React.ReactNode }) {
@@ -92,7 +89,7 @@ export function FloatingProvider({ children }: { children?: React.ReactNode }) {
           state.item2.map((item, key) => {
             return (
               <Floating className="floatTab" key={key} name={String(key)}>
-                {item()}
+                {item.render()}
               </Floating>
             );
           }),
@@ -106,6 +103,7 @@ export function FloatingProvider({ children }: { children?: React.ReactNode }) {
 export function Floating(props: {
   children: React.ReactNode;
   name: string;
+  className?: string;
   style?: React.CSSProperties;
 }) {
   var posP = [0, 0],
@@ -116,7 +114,7 @@ export function Floating(props: {
   // child 노드 구분자
 
   const [snap, setSnap] = useState(false);
-  const { state, dispatch } = useContext(FloatingStateContext);
+  const context = useContext(FloatingStateContext);
 
   const setPos = (pos0: number, pos1: number) => {
     if (wnapp) {
@@ -153,12 +151,15 @@ export function Floating(props: {
   };
 
   const toolClick = () => {
-    dispatch({
-      type: "front",
-      payload: {
-        name: props.name,
-      },
-    });
+    if (context) {
+      context.dispatch({
+        type: "front",
+        payload: {
+          name: props.name,
+        },
+      });
+    }
+
     console.log("toolClick", props);
   };
 
@@ -198,17 +199,18 @@ export function withFloating(
   Component: React.FC,
   options: FloatingItemOptions = {}
 ) {
-  const { state, dispatch } = useContext(FloatingStateContext);
+  const context = useContext(FloatingStateContext)!;
 
   useEffect(() => {
-    console.log("hsshin asdf");
-    dispatch({
-      type: "add",
-      payload: {
-        render: Component,
-        options,
-      },
-    });
+    if (context) {
+      context.dispatch({
+        type: "add",
+        payload: {
+          render: Component,
+          options,
+        },
+      });
+    }
   }, []);
 
   return null;
