@@ -54,16 +54,17 @@ function SubApp() {
           </div>
         ),
         {
-          barComponent: () => {
+          barComponent: (props) => {
             return (
               <div
                 css={{
                   position: "absolute",
-                  width: "100%",
-                  backgroundColor: "purple",
+                  width: "70%",
+                  backgroundColor: "black",
                   zIndex: 1,
                   opacity: 0.5,
                 }}
+                {...props}
               >
                 bar
               </div>
