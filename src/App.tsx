@@ -2,7 +2,7 @@ import { useState } from "react";
 import reactLogo from "./assets/react.svg";
 import "./App.css";
 import { MiniChat } from "./MiniChat";
-import { FloatingProvider } from "./Floating";
+import { FloatingProvider, withFloating } from "./Floating";
 
 function App() {
   return (
@@ -13,10 +13,7 @@ function App() {
             display: "flex",
           }}
         >
-          <MiniChat />
-          <MiniChat />
-          <MiniChat />
-          <MiniChat />
+          <SubApp />
         </div>
       </FloatingProvider>
     </div>
@@ -24,3 +21,21 @@ function App() {
 }
 
 export default App;
+
+function SubApp() {
+  return (
+    <>
+      {withFloating((props) => {
+        return (
+          <div style={{ backgroundColor: "red", width: "100px" }} {...props}>
+            this is div 123123
+          </div>
+        );
+      })}
+      {/* {withFloating(MiniChat)}
+      {withFloating(MiniChat)}
+      {withFloating(MiniChat)}
+      {withFloating(MiniChat)} */}
+    </>
+  );
+}

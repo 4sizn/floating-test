@@ -24,6 +24,13 @@ const FloatingStateContext = React.createContext<{} | null>(null);
 function reducer(state = {}, action: PayloadAction<{}>) {
   switch (action.type) {
     case "add": {
+      state = {
+        items: {
+          ...state.items,
+          ...action.payload.component,
+        },
+      };
+
       break;
     }
     case "remove": {
@@ -54,7 +61,7 @@ const initialState = {
     1: {
       render: function (props) {
         return (
-          <div style={{ backgroundColor: "red", width: "100px" }} {...props}>
+          <div style={{ backgroundColor: "blue", width: "100px" }} {...props}>
             this is div 123123
           </div>
         );
@@ -63,7 +70,7 @@ const initialState = {
     2: {
       render: function (props) {
         return (
-          <div style={{ backgroundColor: "red", width: "100px" }} {...props}>
+          <div style={{ backgroundColor: "green", width: "100px" }} {...props}>
             this is div 123123
           </div>
         );
@@ -181,18 +188,19 @@ export function Floating(props: { children: React.ReactNode; name: string }) {
   );
 }
 
-function useFloating(component, options) {
+export function withFloating(Component, options) {
   const { state, dispatch } = useContext(FloatingStateContext);
 
   useEffect(() => {
+    console.log("hsshin asdf");
     dispatch({
       type: "add",
       payload: {
-        component,
+        Component,
         options,
       },
     });
   }, []);
 
-  return {};
+  return null;
 }
