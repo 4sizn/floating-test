@@ -43,20 +43,31 @@ type FloatingItemState = {
 };
 
 type FloatingState = {
-  item2: FloatingItemState[];
+  item2: Record<string, FloatingItemState>;
+  data: {
+    hz: number;
+  };
+};
+
+const initialState = {
+  item2: {},
+  data: {
+    hz: 0,
+  },
 };
 
 function reducer(
-  state: FloatingState = {
-    item2: [],
-  },
+  state: FloatingState = initialState,
   action: PayloadAction<FloatingItemState>
 ) {
   switch (action.type) {
     case "add": {
       state = {
         ...state,
-        item2: [...state.item2, action.payload],
+        item2: {
+          ...state.item2,
+          [action.payload.id]: action.payload,
+        },
       };
 
       break;
@@ -65,6 +76,19 @@ function reducer(
       break;
     }
     case "front": {
+      console.log("front", action.payload);
+      state = {
+        ...state,
+        item2: {
+          ...state.item2,
+          [action.payload.name]: {
+            ...state.item2[action.payload.name],
+          },
+        },
+        data: {
+          hz: state.data.hz + 1,
+        },
+      };
       break;
     }
     default: {
@@ -75,10 +99,6 @@ function reducer(
   return state;
 }
 
-const initialState = {
-  item2: [],
-};
-
 export function FloatingProvider({ children }: { children?: React.ReactNode }) {
   const [state, dispatch] = useReducer(reducer, initialState);
 
@@ -87,7 +107,7 @@ export function FloatingProvider({ children }: { children?: React.ReactNode }) {
       <>{children}</>
       <>
         {ReactDOM.createPortal(
-          state.item2.map((item, key) => {
+          Object.entries(state.item2).map(([key, item]) => {
             return (
               <Floating className="floatTab" key={key} name={String(key)}>
                 {item.options.barComponent && item.options.barComponent({})}
