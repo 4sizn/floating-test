@@ -37,6 +37,7 @@ type FloatingItemOptions = {
 };
 
 type FloatingItemState = {
+  id: string;
   render: (props?: any) => React.ReactNode;
   options: FloatingItemOptions;
 };
@@ -206,6 +207,7 @@ export function withFloating(
       context.dispatch({
         type: "add",
         payload: {
+          id: String(Math.random()),
           render: Component,
           options,
         },

@@ -25,9 +25,9 @@ export default App;
 function SubApp() {
   return (
     <>
-      {withFloating((props) => {
+      {withFloating(() => {
         return (
-          <div style={{ backgroundColor: "red", width: "100px" }} {...props}>
+          <div style={{ backgroundColor: "red", width: "100px" }}>
             this is div 123123d
           </div>
         );
