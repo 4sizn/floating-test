@@ -90,6 +90,7 @@ export function FloatingProvider({ children }: { children?: React.ReactNode }) {
           state.item2.map((item, key) => {
             return (
               <Floating className="floatTab" key={key} name={String(key)}>
+                {item.options.barComponent && item.options.barComponent({})}
                 {item.render()}
               </Floating>
             );
@@ -101,12 +102,13 @@ export function FloatingProvider({ children }: { children?: React.ReactNode }) {
   );
 }
 
-export function Floating(props: {
-  children: React.ReactNode;
-  name: string;
-  className?: string;
-  style?: React.CSSProperties;
-}) {
+export function Floating(
+  props: React.PropsWithChildren<{
+    name: string;
+    className?: string;
+    style?: React.CSSProperties;
+  }>
+) {
   var posP = [0, 0],
     //마우스 좌표
     posM = [0, 0];
