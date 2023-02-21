@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import reactLogo from "./assets/react.svg";
 import "./App.css";
 import { MiniChat } from "./MiniChat";
-import { FloatingProvider, withFloating } from "./Floating";
+import { FloatingProvider, withAddFloating } from "./Floating";
 
 function App() {
   return (
@@ -25,7 +25,7 @@ export default App;
 function SubApp() {
   return (
     <>
-      {withFloating(
+      {withAddFloating(
         () => {
           return (
             <div style={{ backgroundColor: "red", width: "100px" }}>
@@ -39,15 +39,15 @@ function SubApp() {
           },
         }
       )}
-      {withFloating(() => (
+      {withAddFloating(() => (
         <button>asdfasdf</button>
       ))}
 
-      {withFloating(() => (
+      {withAddFloating(() => (
         <div>MiniChat</div>
       ))}
 
-      {withFloating(
+      {withAddFloating(
         () => (
           <div>
             <MiniChat />

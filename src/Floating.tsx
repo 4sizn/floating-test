@@ -198,7 +198,7 @@ export function Floating(
   );
 }
 
-export function withFloating(
+export function withAddFloating(
   Component: React.FC,
   options: FloatingItemOptions = {}
 ) {
