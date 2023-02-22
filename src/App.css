@@ -55,3 +55,62 @@
 .z9900 {
   z-index: 9900;
 }
+
+.resizecont {
+  position: absolute;
+}
+
+.resizecont {
+  background-color: blue;
+}
+.topone {
+  top: -8px;
+  left: 0;
+  width: 80%;
+}
+
+.rightone {
+  top: 0;
+  right: -8px;
+  height: 100%;
+}
+
+.leftone {
+  top: 0;
+  left: -8px;
+  height: 100%;
+}
+
+.bottomone {
+  bottom: -8px;
+  left: 0;
+  width: 100%;
+}
+
+.h-full {
+  height: 100%;
+}
+
+.flex {
+  display: flex;
+}
+
+.cursor-nw-resize {
+  cursor: nw-resize;
+}
+
+.cursor-n-resize {
+  cursor: n-resize;
+}
+
+.cursor-w-resize {
+  cursor: w-resize;
+}
+
+.cursor-col-resize {
+  cursor: col-resize;
+}
+
+.cursor-row-resize {
+  cursor: row-resize;
+}

@@ -43,14 +43,14 @@ type FloatingItemState = {
 };
 
 type FloatingState = {
-  item2: Record<string, FloatingItemState>;
+  item: Record<string, FloatingItemState>;
   data: {
     hz: number;
   };
 };
 
 const initialState = {
-  item2: {},
+  item: {},
   data: {
     hz: 0,
   },
@@ -64,8 +64,8 @@ function reducer(
     case "add": {
       state = {
         ...state,
-        item2: {
-          ...state.item2,
+        item: {
+          ...state.item,
           [action.payload.id]: action.payload,
         },
       };
@@ -79,10 +79,10 @@ function reducer(
       console.log("front", action.payload);
       state = {
         ...state,
-        item2: {
-          ...state.item2,
+        item: {
+          ...state.item,
           [action.payload.name]: {
-            ...state.item2[action.payload.name],
+            ...state.item[action.payload.name],
           },
         },
         data: {
@@ -107,10 +107,67 @@ export function FloatingProvider({ children }: { children?: React.ReactNode }) {
       <>{children}</>
       <>
         {ReactDOM.createPortal(
-          Object.entries(state.item2).map(([key, item]) => {
+          Object.entries(state.item).map(([key, item]) => {
             return (
               <Floating className="floatTab" key={key} name={String(key)}>
                 {item.options.barComponent && item.options.barComponent({})}
+                {item.options.resize && (
+                  <>
+                    <div className="resizecont topone">
+                      <div className="flex">
+                        <div
+                          className="cursor-nw-resize"
+                          css={{
+                            width: "8px",
+                            height: "8px",
+                          }}
+                        ></div>
+                        <div
+                          className="cursor-row-resize"
+                          css={{
+                            width: "100px",
+                            minWidth: "8px",
+                            minHeight: "8px",
+                          }}
+                        ></div>
+                      </div>
+                    </div>
+                    <div className="resizecont leftone">
+                      <div className="h-full">
+                        <div
+                          className="cursor-col-resize"
+                          css={{
+                            height: "100%",
+                            minWidth: "8px",
+                            minHeight: "8px",
+                          }}
+                        />
+                      </div>
+                    </div>
+                    <div className="resizecont rightone">
+                      <div className="h-full">
+                        <div
+                          className="cursor-col-resize"
+                          css={{
+                            height: "100%",
+                            minWidth: "8px",
+                            minHeight: "8px",
+                          }}
+                        ></div>
+                      </div>
+                    </div>
+                    <div className="resizecont bottomone">
+                      <div
+                        className="cursor-row-resize"
+                        css={{
+                          width: "100%",
+                          minWidth: "8px",
+                          minHeight: "8px",
+                        }}
+                      ></div>
+                    </div>
+                  </>
+                )}
                 {item.render()}
               </Floating>
             );

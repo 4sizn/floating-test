@@ -25,7 +25,7 @@ export default App;
 function SubApp() {
   return (
     <>
-      {withAddFloating(
+      {/* {withAddFloating(
         () => {
           return (
             <div style={{ backgroundColor: "red", width: "100px" }}>
@@ -37,6 +37,7 @@ function SubApp() {
           barComponent: () => {
             return <div>bar</div>;
           },
+          resize: true,
         }
       )}
       {withAddFloating(() => (
@@ -45,7 +46,7 @@ function SubApp() {
 
       {withAddFloating(() => (
         <div>MiniChat</div>
-      ))}
+      ))} */}
 
       {withAddFloating(
         () => (
@@ -70,6 +71,7 @@ function SubApp() {
               </div>
             );
           },
+          resize: true,
         }
       )}
     </>
