@@ -1,4 +1,10 @@
-import React, { useContext, useEffect, useReducer, useState } from "react";
+import React, {
+  ComponentProps,
+  useContext,
+  useEffect,
+  useReducer,
+  useState,
+} from "react";
 import ReactDOM from "react-dom";
 
 export type PayloadAction<
@@ -110,65 +116,88 @@ export function FloatingProvider({ children }: { children?: React.ReactNode }) {
           Object.entries(state.item).map(([key, item]) => {
             return (
               <Floating className="floatTab" key={key} name={String(key)}>
-                {item.options.barComponent && item.options.barComponent({})}
-                {item.options.resize && (
-                  <>
-                    <div className="resizecont topone">
-                      <div className="flex">
-                        <div
-                          className="cursor-nw-resize"
-                          css={{
-                            width: "8px",
-                            height: "8px",
-                          }}
-                        ></div>
-                        <div
-                          className="cursor-row-resize"
-                          css={{
-                            width: "100px",
-                            minWidth: "8px",
-                            minHeight: "8px",
-                          }}
-                        ></div>
+                {(props) => {
+                  console.log("props", props);
+                  return (
+                    <>
+                      <div {...props} data-op="0">
+                        {item.options.barComponent &&
+                          item.options.barComponent({
+                            ...props,
+                            ["data-op"]: 0,
+                          })}
+                        {item.options.resize && (
+                          <>
+                            <div className="resizecont topone">
+                              <div className="flex">
+                                <div
+                                  className="cursor-nw-resize"
+                                  data-op="1"
+                                  onMouseDown={props.onMouseDown}
+                                  css={{
+                                    width: "8px",
+                                    height: "8px",
+                                  }}
+                                ></div>
+                                <div
+                                  className="cursor-row-resize"
+                                  data-op="1"
+                                  onMouseDown={props.onMouseDown}
+                                  css={{
+                                    width: "100px",
+                                    minWidth: "8px",
+                                    minHeight: "8px",
+                                  }}
+                                ></div>
+                              </div>
+                            </div>
+                            <div className="resizecont leftone">
+                              <div className="h-full">
+                                <div
+                                  className="cursor-col-resize"
+                                  data-op="1"
+                                  onMouseDown={props.onMouseDown}
+                                  css={{
+                                    height: "100%",
+                                    minWidth: "8px",
+                                    minHeight: "8px",
+                                  }}
+                                />
+                              </div>
+                            </div>
+                            <div className="resizecont rightone">
+                              <div className="h-full">
+                                <div
+                                  className="cursor-col-resize"
+                                  data-op="1"
+                                  onMouseDown={props.onMouseDown}
+                                  css={{
+                                    height: "100%",
+                                    minWidth: "8px",
+                                    minHeight: "8px",
+                                  }}
+                                ></div>
+                              </div>
+                            </div>
+                            <div className="resizecont bottomone">
+                              <div
+                                className="cursor-row-resize"
+                                data-op="1"
+                                onMouseDown={props.onMouseDown}
+                                css={{
+                                  width: "100%",
+                                  minWidth: "8px",
+                                  minHeight: "8px",
+                                }}
+                              ></div>
+                            </div>
+                          </>
+                        )}
+                        {item.render()}
                       </div>
-                    </div>
-                    <div className="resizecont leftone">
-                      <div className="h-full">
-                        <div
-                          className="cursor-col-resize"
-                          css={{
-                            height: "100%",
-                            minWidth: "8px",
-                            minHeight: "8px",
-                          }}
-                        />
-                      </div>
-                    </div>
-                    <div className="resizecont rightone">
-                      <div className="h-full">
-                        <div
-                          className="cursor-col-resize"
-                          css={{
-                            height: "100%",
-                            minWidth: "8px",
-                            minHeight: "8px",
-                          }}
-                        ></div>
-                      </div>
-                    </div>
-                    <div className="resizecont bottomone">
-                      <div
-                        className="cursor-row-resize"
-                        css={{
-                          width: "100%",
-                          minWidth: "8px",
-                          minHeight: "8px",
-                        }}
-                      ></div>
-                    </div>
-                  </>
-                )}
-                {item.render()}
+                    </>
+                  );
+                }}
               </Floating>
             );
           }),
@@ -179,19 +208,23 @@ export function FloatingProvider({ children }: { children?: React.ReactNode }) {
   );
 }
 
-export function Floating(
-  props: React.PropsWithChildren<{
-    name: string;
-    className?: string;
-    style?: React.CSSProperties;
-  }>
-) {
+export function Floating({
+  children,
+  ...props
+}: React.PropsWithChildren<{
+  name: string;
+  className?: string;
+  style?: React.CSSProperties;
+}>) {
   var posP = [0, 0],
     //마우스 좌표
     posM = [0, 0];
   // 노드 타겟
   let wnapp: HTMLElement | null = null;
-  // child 노드 구분자
+  // resize용 drag용 구분자
+  let op = 0;
+  let dimP = [0, 0];
+  let vec = [0, 0];
 
   const [snap, setSnap] = useState(false);
   const context = useContext(FloatingStateContext);
@@ -200,6 +233,13 @@ export function Floating(
     if (wnapp) {
       wnapp.style.top = pos0 + "px";
       wnapp.style.left = pos1 + "px";
+    }
+  };
+
+  const setDim = (dim0: number, dim1: number) => {
+    if (wnapp) {
+      wnapp.style.height = dim0 + "px";
+      wnapp.style.width = dim1 + "px";
     }
   };
 
@@ -216,8 +256,20 @@ export function Floating(
     e.preventDefault();
 
     var pos0 = posP[0] + e.clientY - posM[0],
-      pos1 = posP[1] + e.clientX - posM[1];
-    setPos(pos0, pos1);
+      pos1 = posP[1] + e.clientX - posM[1],
+      dim0 = dimP[0] + vec[0] * (e.clientY - posM[0]),
+      dim1 = dimP[1] + vec[1] * (e.clientX - posM[1]);
+
+    console.log("op", op);
+    if (op == 0) setPos(pos0, pos1);
+    else {
+      dim0 = Math.max(dim0, 320);
+      dim1 = Math.max(dim1, 320);
+      pos0 = posP[0] + Math.min(vec[0], 0) * (dim0 - dimP[0]);
+      pos1 = posP[1] + Math.min(vec[1], 0) * (dim1 - dimP[1]);
+      setPos(pos0, pos1);
+      setDim(dim0, dim1);
+    }
   };
 
   const openSnap = () => {
@@ -244,6 +296,7 @@ export function Floating(
   };
 
   const toolDrag: React.MouseEventHandler<HTMLDivElement> = (e) => {
+    console.log("eee", e);
     e = e || window.event;
     e.preventDefault();
     posM = [e.clientY, e.clientX];
@@ -261,18 +314,13 @@ export function Floating(
     console.log("toolDrag", posM, wnapp);
   };
 
-  return (
-    <div
-      style={{
-        ...props.style,
-      }}
-      onClick={toolClick}
-      onMouseDown={toolDrag}
-      onMouseOver={openSnap}
-      onMouseLeave={closeSnap}
-      {...props}
-    />
-  );
+  return children({
+    ...props,
+    onClick: toolClick,
+    onMouseDown: toolDrag,
+    onMouseOver: openSnap,
+    onMouseLeave: closeSnap,
+  });
 }
 
 export function withAddFloating(
