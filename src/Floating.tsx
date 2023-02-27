@@ -115,7 +115,7 @@ export function FloatingProvider({ children }: { children?: React.ReactNode }) {
         {ReactDOM.createPortal(
           Object.entries(state.item).map(([key, item]) => {
             return (
-              <Floating className="floatTab" key={key} name={String(key)}>
+              <Floating key={key} name={String(key)}>
                 {(props) => {
                   console.log("props", props);
                   return (
@@ -316,6 +316,7 @@ export function Floating({
 
   return children({
     ...props,
+    className: "floatTab",
     onClick: toolClick,
     onMouseDown: toolDrag,
     onMouseOver: openSnap,
