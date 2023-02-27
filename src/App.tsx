@@ -50,9 +50,7 @@ function SubApp() {
 
       {withAddFloating(
         () => (
-          <div>
-            <MiniChat />
-          </div>
+          <MiniChat />
         ),
         {
           barComponent: (props) => {

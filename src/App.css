@@ -66,7 +66,7 @@
 .topone {
   top: -8px;
   left: 0;
-  width: 80%;
+  width: 100%;
 }
 
 .rightone {
@@ -99,8 +99,20 @@
   cursor: nw-resize;
 }
 
+.cursor-sw-resize {
+  cursor: sw-resize;
+}
+
 .cursor-n-resize {
   cursor: n-resize;
+}
+
+.cursor-nesw-resize {
+  cursor: nesw-resize;
+}
+
+.cursor-nwse-resize {
+  cursor: nwse-resize;
 }
 
 .cursor-w-resize {

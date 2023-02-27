@@ -151,6 +151,16 @@ export function FloatingProvider({ children }: { children?: React.ReactNode }) {
                                     minHeight: "8px",
                                   }}
                                 ></div>
+                                <div
+                                  className="cursor-sw-resize"
+                                  data-op="1"
+                                  data-vec="-1,1"
+                                  onMouseDown={props.onMouseDown}
+                                  css={{
+                                    width: "8px",
+                                    height: "8px",
+                                  }}
+                                ></div>
                               </div>
                             </div>
                             <div className="resizecont leftone">
@@ -184,17 +194,39 @@ export function FloatingProvider({ children }: { children?: React.ReactNode }) {
                               </div>
                             </div>
                             <div className="resizecont bottomone">
-                              <div
-                                className="cursor-row-resize"
-                                data-op="1"
-                                data-vec="1,0"
-                                onMouseDown={props.onMouseDown}
-                                css={{
-                                  width: "100%",
-                                  minWidth: "8px",
-                                  minHeight: "8px",
-                                }}
-                              ></div>
+                              <div className="flex">
+                                <div
+                                  className="cursor-nesw-resize"
+                                  data-op="1"
+                                  data-vec="1,0"
+                                  onMouseDown={props.onMouseDown}
+                                  css={{
+                                    width: "8px",
+                                    height: "8px",
+                                  }}
+                                ></div>
+                                <div
+                                  className="cursor-row-resize"
+                                  data-op="1"
+                                  data-vec="1,0"
+                                  onMouseDown={props.onMouseDown}
+                                  css={{
+                                    width: "100%",
+                                    minWidth: "8px",
+                                    minHeight: "8px",
+                                  }}
+                                ></div>
+                                <div
+                                  className="cursor-nwse-resize"
+                                  data-op="1"
+                                  data-vec="1,0"
+                                  onMouseDown={props.onMouseDown}
+                                  css={{
+                                    width: "8px",
+                                    height: "8px",
+                                  }}
+                                ></div>
+                              </div>
                             </div>
                           </>
                         )}
