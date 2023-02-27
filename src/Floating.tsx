@@ -198,7 +198,7 @@ export function FloatingProvider({ children }: { children?: React.ReactNode }) {
                                 <div
                                   className="cursor-nesw-resize"
                                   data-op="1"
-                                  data-vec="1,0"
+                                  data-vec="1,-1"
                                   onMouseDown={props.onMouseDown}
                                   css={{
                                     width: "8px",
@@ -219,7 +219,7 @@ export function FloatingProvider({ children }: { children?: React.ReactNode }) {
                                 <div
                                   className="cursor-nwse-resize"
                                   data-op="1"
-                                  data-vec="1,0"
+                                  data-vec="1,1"
                                   onMouseDown={props.onMouseDown}
                                   css={{
                                     width: "8px",
