@@ -120,11 +120,11 @@ export function FloatingProvider({ children }: { children?: React.ReactNode }) {
                   console.log("props", props);
                   return (
                     <>
-                      <div {...props} data-op="0">
+                      <div className="floatTab">
                         {item.options.barComponent &&
                           item.options.barComponent({
                             ...props,
-                            ["data-op"]: 0,
+                            ["data-op"]: "0",
                           })}
                         {item.options.resize && (
                           <>
@@ -133,6 +133,7 @@ export function FloatingProvider({ children }: { children?: React.ReactNode }) {
                                 <div
                                   className="cursor-nw-resize"
                                   data-op="1"
+                                  data-vec="-1,-1"
                                   onMouseDown={props.onMouseDown}
                                   css={{
                                     width: "8px",
@@ -142,9 +143,10 @@ export function FloatingProvider({ children }: { children?: React.ReactNode }) {
                                 <div
                                   className="cursor-row-resize"
                                   data-op="1"
+                                  data-vec="-1,0"
                                   onMouseDown={props.onMouseDown}
                                   css={{
-                                    width: "100px",
+                                    width: "100%",
                                     minWidth: "8px",
                                     minHeight: "8px",
                                   }}
@@ -156,6 +158,7 @@ export function FloatingProvider({ children }: { children?: React.ReactNode }) {
                                 <div
                                   className="cursor-col-resize"
                                   data-op="1"
+                                  data-vec="0,-1"
                                   onMouseDown={props.onMouseDown}
                                   css={{
                                     height: "100%",
@@ -170,6 +173,7 @@ export function FloatingProvider({ children }: { children?: React.ReactNode }) {
                                 <div
                                   className="cursor-col-resize"
                                   data-op="1"
+                                  data-vec="0,1"
                                   onMouseDown={props.onMouseDown}
                                   css={{
                                     height: "100%",
@@ -183,6 +187,7 @@ export function FloatingProvider({ children }: { children?: React.ReactNode }) {
                               <div
                                 className="cursor-row-resize"
                                 data-op="1"
+                                data-vec="1,0"
                                 onMouseDown={props.onMouseDown}
                                 css={{
                                   width: "100%",
@@ -249,6 +254,13 @@ export function Floating({
 
     wnapp?.classList.remove("notrans");
     wnapp?.classList.remove("z9900");
+
+    if (context) {
+      context.dispatch({
+        type: "resize",
+        payload: {},
+      });
+    }
   };
 
   const eleDrag: typeof document.onmousemove = (e) => {
@@ -260,11 +272,12 @@ export function Floating({
       dim0 = dimP[0] + vec[0] * (e.clientY - posM[0]),
       dim1 = dimP[1] + vec[1] * (e.clientX - posM[1]);
 
-    console.log("op", op);
+    console.log("###", dim0, dim1);
+    console.log("###eleDrag");
     if (op == 0) setPos(pos0, pos1);
     else {
-      dim0 = Math.max(dim0, 320);
-      dim1 = Math.max(dim1, 320);
+      dim0 = Math.max(dim0, 300);
+      dim1 = Math.max(dim1, 300);
       pos0 = posP[0] + Math.min(vec[0], 0) * (dim0 - dimP[0]);
       pos1 = posP[1] + Math.min(vec[1], 0) * (dim1 - dimP[1]);
       setPos(pos0, pos1);
@@ -300,12 +313,25 @@ export function Floating({
     e = e || window.event;
     e.preventDefault();
     posM = [e.clientY, e.clientX];
-    wnapp = e.currentTarget as HTMLElement;
+    op = Number(e.currentTarget.dataset.op);
+    console.log("###op", op);
+
+    if (op === 0) {
+      wnapp = e.currentTarget.parentElement as HTMLElement;
+    } else {
+      vec = e.currentTarget.dataset.vec!.split(",").map((v) => Number(v));
+      wnapp = e.currentTarget.parentElement?.parentElement
+        ?.parentElement as HTMLElement;
+    }
 
     if (wnapp) {
       wnapp.classList.add("notrans");
       wnapp.classList.add("z9900");
       posP = [wnapp.offsetTop, wnapp.offsetLeft];
+      dimP = [
+        parseFloat(getComputedStyle(wnapp).height.replaceAll("px", "")),
+        parseFloat(getComputedStyle(wnapp).width.replaceAll("px", "")),
+      ];
     }
 
     document.onmouseup = closeDrag;
@@ -316,7 +342,6 @@ export function Floating({
 
   return children({
     ...props,
-    className: "floatTab",
     onClick: toolClick,
     onMouseDown: toolDrag,
     onMouseOver: openSnap,
