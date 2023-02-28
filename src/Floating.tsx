@@ -144,123 +144,116 @@ export function FloatingProvider({ children }: { children?: React.ReactNode }) {
                   console.log("props", props);
                   return (
                     <>
-                      <div
-                        className="floatTab"
-                        style={{
-                          zIndex: item.options.z,
-                        }}
-                      >
-                        {item.options.barComponent &&
-                          item.options.barComponent({
-                            ...props,
-                            ["data-op"]: "0",
-                          })}
-                        {item.options.resize && (
-                          <>
-                            <div className="resizecont topone">
-                              <div className="flex">
-                                <div
-                                  className="cursor-nw-resize"
-                                  data-op="1"
-                                  data-vec="-1,-1"
-                                  onMouseDown={props.onMouseDown}
-                                  css={{
-                                    width: "8px",
-                                    height: "8px",
-                                  }}
-                                ></div>
-                                <div
-                                  className="cursor-row-resize"
-                                  data-op="1"
-                                  data-vec="-1,0"
-                                  onMouseDown={props.onMouseDown}
-                                  css={{
-                                    width: "100%",
-                                    minWidth: "8px",
-                                    minHeight: "8px",
-                                  }}
-                                ></div>
-                                <div
-                                  className="cursor-sw-resize"
-                                  data-op="1"
-                                  data-vec="-1,1"
-                                  onMouseDown={props.onMouseDown}
-                                  css={{
-                                    width: "8px",
-                                    height: "8px",
-                                  }}
-                                ></div>
-                              </div>
+                      {item.options.barComponent &&
+                        item.options.barComponent({
+                          ...props,
+                          ["data-op"]: "0",
+                        })}
+                      {item.options.resize && (
+                        <>
+                          <div className="resizecont topone">
+                            <div className="flex">
+                              <div
+                                className="cursor-nw-resize"
+                                data-op="1"
+                                data-vec="-1,-1"
+                                onMouseDown={props.onMouseDown}
+                                css={{
+                                  width: "8px",
+                                  height: "8px",
+                                }}
+                              ></div>
+                              <div
+                                className="cursor-row-resize"
+                                data-op="1"
+                                data-vec="-1,0"
+                                onMouseDown={props.onMouseDown}
+                                css={{
+                                  width: "100%",
+                                  minWidth: "8px",
+                                  minHeight: "8px",
+                                }}
+                              ></div>
+                              <div
+                                className="cursor-sw-resize"
+                                data-op="1"
+                                data-vec="-1,1"
+                                onMouseDown={props.onMouseDown}
+                                css={{
+                                  width: "8px",
+                                  height: "8px",
+                                }}
+                              ></div>
                             </div>
-                            <div className="resizecont leftone">
-                              <div className="h-full">
-                                <div
-                                  className="cursor-col-resize"
-                                  data-op="1"
-                                  data-vec="0,-1"
-                                  onMouseDown={props.onMouseDown}
-                                  css={{
-                                    height: "100%",
-                                    minWidth: "8px",
-                                    minHeight: "8px",
-                                  }}
-                                />
-                              </div>
+                          </div>
+                          <div className="resizecont leftone">
+                            <div className="h-full">
+                              <div
+                                className="cursor-col-resize"
+                                data-op="1"
+                                data-vec="0,-1"
+                                onMouseDown={props.onMouseDown}
+                                css={{
+                                  height: "100%",
+                                  minWidth: "8px",
+                                  minHeight: "8px",
+                                }}
+                              />
                             </div>
-                            <div className="resizecont rightone">
-                              <div className="h-full">
-                                <div
-                                  className="cursor-col-resize"
-                                  data-op="1"
-                                  data-vec="0,1"
-                                  onMouseDown={props.onMouseDown}
-                                  css={{
-                                    height: "100%",
-                                    minWidth: "8px",
-                                    minHeight: "8px",
-                                  }}
-                                ></div>
-                              </div>
+                          </div>
+                          <div className="resizecont rightone">
+                            <div className="h-full">
+                              <div
+                                className="cursor-col-resize"
+                                data-op="1"
+                                data-vec="0,1"
+                                onMouseDown={props.onMouseDown}
+                                css={{
+                                  height: "100%",
+                                  minWidth: "8px",
+                                  minHeight: "8px",
+                                }}
+                              ></div>
                             </div>
-                            <div className="resizecont bottomone">
-                              <div className="flex">
-                                <div
-                                  className="cursor-nesw-resize"
-                                  data-op="1"
-                                  data-vec="1,-1"
-                                  onMouseDown={props.onMouseDown}
-                                  css={{
-                                    width: "8px",
-                                    height: "8px",
-                                  }}
-                                ></div>
-                                <div
-                                  className="cursor-row-resize"
-                                  data-op="1"
-                                  data-vec="1,0"
-                                  onMouseDown={props.onMouseDown}
-                                  css={{
-                                    width: "100%",
-                                    minWidth: "8px",
-                                    minHeight: "8px",
-                                  }}
-                                ></div>
-                                <div
-                                  className="cursor-nwse-resize"
-                                  data-op="1"
-                                  data-vec="1,1"
-                                  onMouseDown={props.onMouseDown}
-                                  css={{
-                                    width: "8px",
-                                    height: "8px",
-                                  }}
-                                ></div>
-                              </div>
+                          </div>
+                          <div className="resizecont bottomone">
+                            <div className="flex">
+                              <div
+                                className="cursor-nesw-resize"
+                                data-op="1"
+                                data-vec="1,-1"
+                                onMouseDown={props.onMouseDown}
+                                css={{
+                                  width: "8px",
+                                  height: "8px",
+                                }}
+                              ></div>
+                              <div
+                                className="cursor-row-resize"
+                                data-op="1"
+                                data-vec="1,0"
+                                onMouseDown={props.onMouseDown}
+                                css={{
+                                  width: "100%",
+                                  minWidth: "8px",
+                                  minHeight: "8px",
+                                }}
+                              ></div>
+                              <div
+                                className="cursor-nwse-resize"
+                                data-op="1"
+                                data-vec="1,1"
+                                onMouseDown={props.onMouseDown}
+                                css={{
+                                  width: "8px",
+                                  height: "8px",
+                                }}
+                              ></div>
                             </div>
-                          </>
-                        )}
-                        {item.render()}
-                      </div>
+                          </div>
+                        </>
+                      )}
+                      {item.render()}
                     </>
                   );
                 }}
@@ -403,13 +396,22 @@ export function Floating({
     console.log("toolDrag", posM, wnapp);
   };
 
-  return children({
-    ...props,
-    onClick: toolClick,
-    onMouseDown: toolDrag,
-    onMouseOver: openSnap,
-    onMouseLeave: closeSnap,
-  });
+  return (
+    <div
+      className="floatTab"
+      style={{
+        zIndex: context?.state.item[props.name].options.z,
+      }}
+    >
+      {children({
+        ...props,
+        onClick: toolClick,
+        onMouseDown: toolDrag,
+        onMouseOver: openSnap,
+        onMouseLeave: closeSnap,
+      })}
+    </div>
+  );
 }
 
 export function withAddFloating(
