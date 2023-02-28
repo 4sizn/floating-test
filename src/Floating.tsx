@@ -1,10 +1,4 @@
-import React, {
-  ComponentProps,
-  useContext,
-  useEffect,
-  useReducer,
-  useState,
-} from "react";
+import React, { useContext, useEffect, useReducer, useState } from "react";
 import ReactDOM from "react-dom";
 
 export type PayloadAction<
@@ -83,9 +77,19 @@ function reducer(
     case "remove": {
       break;
     }
+    case "resize": {
+      if (state.item[action.payload.id]?.options?.z !== state.data.hz) {
+        state.data.hz = state.data.hz + 1;
+      }
+      state.item[action.payload.id].options.z = state.data.hz;
+
+      break;
+    }
     case "front": {
-      console.log("state.data", state.data.hz);
-      state.data.hz = state.data.hz + 1;
+      if (state.item[action.payload.id].options.z !== state.data.hz) {
+        state.data.hz = state.data.hz + 1;
+        state.item[action.payload.id].options.z = state.data.hz;
+      }
 
       state = {
         ...state,
@@ -95,7 +99,6 @@ function reducer(
             ...state.item[action.payload.id],
             options: {
               ...state.item[action.payload.id].options,
-              z: state.data.hz,
             },
           },
         },
@@ -106,6 +109,9 @@ function reducer(
       break;
     }
   }
+
+  console.log("###state", state);
+  console.log("###current Zindex", state.data.hz);
 
   return state;
 }
@@ -295,7 +301,9 @@ export function Floating({
     if (context) {
       context.dispatch({
         type: "resize",
-        payload: {},
+        payload: {
+          id: props.name,
+        },
       });
     }
   };
