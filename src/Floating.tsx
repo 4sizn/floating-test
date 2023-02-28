@@ -30,7 +30,7 @@ type FloatingStateContextType = {
   state: FloatingState;
   dispatch: React.Dispatch<
     | PayloadAction<FloatingItemState, "add">
-    | PayloadAction<{ name: string }, "front">
+    | PayloadAction<{ id: string }, "front">
   >;
 };
 
@@ -40,6 +40,7 @@ const FloatingStateContext =
 type FloatingItemOptions = {
   resize?: boolean;
   barComponent?: (props: any) => React.ReactNode;
+  z?: number;
 };
 
 type FloatingItemState = {
@@ -66,6 +67,7 @@ function reducer(
   state: FloatingState = initialState,
   action: PayloadAction<FloatingItemState>
 ) {
+  console.log("###reducer", action);
   switch (action.type) {
     case "add": {
       state = {
@@ -82,17 +84,20 @@ function reducer(
       break;
     }
     case "front": {
-      console.log("front", action.payload);
+      console.log("state.data", state.data.hz);
+      state.data.hz = state.data.hz + 1;
+
       state = {
         ...state,
         item: {
           ...state.item,
-          [action.payload.name]: {
-            ...state.item[action.payload.name],
+          [action.payload.id]: {
+            ...state.item[action.payload.id],
+            options: {
+              ...state.item[action.payload.id].options,
+              z: state.data.hz,
+            },
           },
-        },
-        data: {
-          hz: state.data.hz + 1,
         },
       };
       break;
@@ -332,7 +337,7 @@ export function Floating({
       context.dispatch({
         type: "front",
         payload: {
-          name: props.name,
+          id: props.name,
         },
       });
     }
@@ -341,12 +346,12 @@ export function Floating({
   };
 
   const toolDrag: React.MouseEventHandler<HTMLDivElement> = (e) => {
-    console.log("eee", e);
+    console.log("eee toolDrag", e);
+
     e = e || window.event;
     e.preventDefault();
     posM = [e.clientY, e.clientX];
     op = Number(e.currentTarget.dataset.op);
-    console.log("###op", op);
 
     if (op === 0) {
       wnapp = e.currentTarget.parentElement as HTMLElement;
@@ -366,6 +371,9 @@ export function Floating({
       ];
     }
 
+    if (context) {
+      wnapp.style.zIndex = String(context.state.item[props.name].options?.z);
+    }
     document.onmouseup = closeDrag;
     document.onmousemove = eleDrag;
 
