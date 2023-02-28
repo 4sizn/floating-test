@@ -81,14 +81,26 @@ function reducer(
       if (state.item[action.payload.id]?.options?.z !== state.data.hz) {
         state.data.hz = state.data.hz + 1;
       }
-      state.item[action.payload.id].options.z = state.data.hz;
+
+      state = {
+        ...state,
+        item: {
+          ...state.item,
+          [action.payload.id]: {
+            ...state.item[action.payload.id],
+            options: {
+              ...state.item[action.payload.id].options,
+              z: state.data.hz,
+            },
+          },
+        },
+      };
 
       break;
     }
     case "front": {
       if (state.item[action.payload.id].options.z !== state.data.hz) {
         state.data.hz = state.data.hz + 1;
-        state.item[action.payload.id].options.z = state.data.hz;
       }
 
       state = {
@@ -99,6 +111,7 @@ function reducer(
             ...state.item[action.payload.id],
             options: {
               ...state.item[action.payload.id].options,
+              z: state.data.hz,
             },
           },
         },
@@ -131,7 +144,12 @@ export function FloatingProvider({ children }: { children?: React.ReactNode }) {
                   console.log("props", props);
                   return (
                     <>
-                      <div className="floatTab">
+                      <div
+                        className="floatTab"
+                        style={{
+                          zIndex: item.options.z,
+                        }}
+                      >
                         {item.options.barComponent &&
                           item.options.barComponent({
                             ...props,
@@ -379,9 +397,6 @@ export function Floating({
       ];
     }
 
-    if (context) {
-      wnapp.style.zIndex = String(context.state.item[props.name].options?.z);
-    }
     document.onmouseup = closeDrag;
     document.onmousemove = eleDrag;
 
