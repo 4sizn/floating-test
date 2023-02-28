@@ -34,6 +34,8 @@ const FloatingStateContext =
 type FloatingItemOptions = {
   resize?: boolean;
   barComponent?: (props: any) => React.ReactNode;
+  x?: number;
+  y?: number;
   z?: number;
 };
 
@@ -401,6 +403,8 @@ export function Floating({
       className="floatTab"
       style={{
         zIndex: context?.state.item[props.name].options.z,
+        left: context?.state.item[props.name].options.x,
+        top: context?.state.item[props.name].options.y,
       }}
     >
       {children({
