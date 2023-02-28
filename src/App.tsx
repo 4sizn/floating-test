@@ -50,7 +50,11 @@ function SubApp() {
 
       {withAddFloating(
         () => (
-          <MiniChat />
+          <MiniChat
+            style={{
+              backgroundColor: "red",
+            }}
+          />
         ),
         {
           barComponent: (props) => {
@@ -75,7 +79,39 @@ function SubApp() {
 
       {withAddFloating(
         () => (
-          <MiniChat />
+          <MiniChat
+            style={{
+              backgroundColor: "blue",
+            }}
+          />
+        ),
+        {
+          barComponent: (props) => {
+            return (
+              <div
+                css={{
+                  position: "absolute",
+                  width: "70%",
+                  backgroundColor: "black",
+                  zIndex: 1,
+                  opacity: 0.5,
+                }}
+                {...props}
+              >
+                bar
+              </div>
+            );
+          },
+          resize: true,
+        }
+      )}
+      {withAddFloating(
+        () => (
+          <MiniChat
+            style={{
+              backgroundColor: "grey",
+            }}
+          />
         ),
         {
           barComponent: (props) => {

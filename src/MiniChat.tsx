@@ -17,7 +17,7 @@ const chatSchema = z.object({
     }),
 });
 
-export function MiniChat() {
+export function MiniChat({ style }: { style?: React.CSSProperties }) {
   const [sendDisabled, setSendDisabled] = React.useState(false);
   const ref = React.useRef<HTMLFormElement>(null);
 
@@ -64,7 +64,7 @@ export function MiniChat() {
   };
 
   return (
-    <div css={[styleMiniChat]}>
+    <div css={[styleMiniChat, style]}>
       <div css={styleMiniChatHeader}>
         <div>스페이스명</div>
         <div>멤버 98명</div>
