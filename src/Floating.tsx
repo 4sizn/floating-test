@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useReducer, useState } from "react";
 import ReactDOM from "react-dom";
+import "./App.css";
 
 export type PayloadAction<
   P = void,
