@@ -102,7 +102,6 @@ function SubApp() {
             );
           },
           resize: true,
-          ...calSeEdgePosition(),
         }
       )}
       {withAddFloating(
@@ -130,8 +129,6 @@ function SubApp() {
               </div>
             );
           },
-          x: 0,
-          y: 0,
           resize: true,
         }
       )}
@@ -140,6 +137,16 @@ function SubApp() {
 }
 
 function calSeEdgePosition(element: HTMLElement) {
+  const x = window.innerWidth - 300;
+  const y = window.innerHeight - 639;
+
+  return {
+    x,
+    y,
+  };
+}
+
+function calSeEdgePosition2(element: HTMLElement) {
   const x = window.innerWidth - 300;
   const y = window.innerHeight - 639;
 

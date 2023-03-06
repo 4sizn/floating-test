@@ -1,4 +1,10 @@
-import React, { useContext, useEffect, useReducer, useState } from "react";
+import React, {
+  useContext,
+  useEffect,
+  useReducer,
+  useRef,
+  useState,
+} from "react";
 import ReactDOM from "react-dom";
 import "./App.css";
 
@@ -35,8 +41,11 @@ const FloatingStateContext =
 type FloatingItemOptions = {
   resize?: boolean;
   barComponent?: (props: any) => React.ReactNode;
-  x?: number;
-  y?: number;
+  position?: {
+    x?: number;
+    y?: number;
+    z?: number;
+  };
   z?: number;
 };
 
@@ -287,11 +296,13 @@ export function Floating({
   let op = 0;
   let dimP = [0, 0];
   let vec = [0, 0];
+  let ref = useRef<HTMLDivElement | null>(null);
 
   const [snap, setSnap] = useState(false);
   const context = useContext(FloatingStateContext);
 
   const setPos = (pos0: number, pos1: number) => {
+    console.log("hsshin", wnapp);
     if (wnapp) {
       wnapp.style.top = pos0 + "px";
       wnapp.style.left = pos1 + "px";
@@ -399,14 +410,24 @@ export function Floating({
     console.log("toolDrag", posM, wnapp);
   };
 
+  useEffect(() => {
+    console.log("rendered", ref);
+    if (ref.current) {
+      wnapp = ref.current;
+      setPos(
+        window.innerHeight - ref.current.clientHeight - 8,
+        window.innerWidth - ref.current.clientWidth - 8
+      );
+    }
+  }, []);
+
   return (
     <div
       className="floatTab"
       style={{
         zIndex: context?.state.item[props.name].options.z,
-        left: context?.state.item[props.name].options.x,
-        top: context?.state.item[props.name].options.y,
       }}
+      ref={ref}
     >
       {children({
         ...props,
