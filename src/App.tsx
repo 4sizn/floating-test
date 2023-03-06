@@ -73,7 +73,7 @@ function SubApp() {
             );
           },
           resize: true,
-          position: (ref) => {
+          position: () => {
             return {
               x: 15,
               y: 155,
@@ -135,8 +135,8 @@ function SubApp() {
               </div>
             );
           },
-          position: (ref) => {
-            return calEdgePosition(ref, "sw");
+          position: (el) => {
+            return calEdgePosition(el, "sw");
           },
           resize: true,
         }
@@ -166,8 +166,8 @@ function SubApp() {
               </div>
             );
           },
-          position: (ref) => {
-            return calEdgePosition(ref, "se");
+          position: (el) => {
+            return calEdgePosition(el, "se");
           },
           resize: true,
         }
@@ -197,8 +197,8 @@ function SubApp() {
               </div>
             );
           },
-          position: (ref) => {
-            return calEdgePosition(ref, "ne");
+          position: (el) => {
+            return calEdgePosition(el, "ne");
           },
           resize: true,
         }
