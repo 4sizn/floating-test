@@ -412,13 +412,17 @@ export function Floating({
   };
 
   useEffect(() => {
-    console.log("rendered", ref);
+    console.log("rendered", ref.current, props, context?.state);
     if (ref.current) {
-      wnapp = ref.current;
-      setPos(
-        window.innerHeight - ref.current.clientHeight - 8,
-        window.innerWidth - ref.current.clientWidth - 8
-      );
+      if (context?.state.item[props.name]?.options?.position) {
+        wnapp = ref.current;
+        const { x, y } = context?.state.item[props.name]?.options?.position(
+          ref.current
+        );
+        console.log("aa", x, y);
+
+        setPos(y, x);
+      }
     }
   }, []);
 
