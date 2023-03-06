@@ -122,7 +122,7 @@ export function MiniChat({ style }: { style?: React.CSSProperties }) {
 const styleMiniChat = css`
   display: flex;
   flex-direction: column;
-
+  height: 100%;
   min-width: 300px;
 `;
 
@@ -133,7 +133,8 @@ const styleMiniChatHeader = css`
 const styleMiniChatBody = () => css`
   overflow-y: auto;
   min-height: 100px;
-  max-height: 500px;
+  flex-grow: 1;
+  flex-basis: 200px;
 `;
 const styleMiniChatFooter = css``;
 
