@@ -32,6 +32,7 @@ type FloatingStateContextType = {
   dispatch: React.Dispatch<
     | PayloadAction<FloatingItemState, "add">
     | PayloadAction<{ id: string }, "front">
+    | PayloadAction<{ id: string }, "resize">
   >;
 };
 
