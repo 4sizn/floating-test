@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { MouseEventHandler, useEffect } from "react";
 import { css, EmotionCache } from "@emotion/react";
 import { z } from "zod";
 
@@ -17,7 +17,11 @@ const chatSchema = z.object({
     }),
 });
 
-export function MiniChat({ style }: { style?: React.CSSProperties }) {
+export function MiniChat(props: {
+  style?: React.CSSProperties;
+  onClick?: MouseEventHandler<HTMLDivElement>;
+}) {
+  const { style } = props;
   const [sendDisabled, setSendDisabled] = React.useState(false);
   const ref = React.useRef<HTMLFormElement>(null);
 
@@ -64,7 +68,7 @@ export function MiniChat({ style }: { style?: React.CSSProperties }) {
   };
 
   return (
-    <div css={[styleMiniChat, style]}>
+    <div css={[styleMiniChat, style]} onClick={props.onClick}>
       <div css={styleMiniChatHeader}>
         <div>스페이스명</div>
         <div>멤버 98명</div>

@@ -266,7 +266,7 @@ export function FloatingProvider({ children }: { children?: React.ReactNode }) {
                           </div>
                         </>
                       )}
-                      {item.render()}
+                      {item.render({ onClick: props.onClick })}
                     </>
                   );
                 }}
@@ -367,6 +367,7 @@ export function Floating({
   };
 
   const toolClick = () => {
+    console.log("???", toolClick);
     if (context) {
       context.dispatch({
         type: "front",
@@ -457,7 +458,7 @@ export function withAddFloating(
         type: "add",
         payload: {
           id: String(Math.random()),
-          render: Component,
+          render: (props) => <Component {...props} />,
           options,
         },
       });
