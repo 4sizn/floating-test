@@ -42,7 +42,7 @@ const FloatingStateContext =
 type FloatingItemOptions = {
   resize?: boolean;
   barComponent?: (props: any) => React.ReactNode;
-  position?: (element?: HTMLElement) => {
+  position?: (element: HTMLElement) => {
     x?: number;
     y?: number;
     z?: number;
