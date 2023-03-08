@@ -302,11 +302,29 @@ export function Floating({
   const [snap, setSnap] = useState(false);
   const context = useContext(FloatingStateContext);
 
-  const setPos = (pos0: number, pos1: number) => {
-    console.log("hsshin", wnapp);
+  const setPos = (
+    positionData: {
+      x?: number;
+      y?: number;
+      top?: number;
+      bottom?: number;
+      left?: number;
+      right?: number;
+    } = {}
+  ) => {
     if (wnapp) {
-      wnapp.style.top = pos0 + "px";
-      wnapp.style.left = pos1 + "px";
+      Object.hasOwn(positionData, "x") &&
+        (wnapp.style.left = positionData.x + "px");
+      Object.hasOwn(positionData, "y") &&
+        (wnapp.style.top = positionData.y + "px");
+      Object.hasOwn(positionData, "top") &&
+        (wnapp.style.top = positionData.top + "px");
+      Object.hasOwn(positionData, "bottom") &&
+        (wnapp.style.bottom = positionData.bottom + "px");
+      Object.hasOwn(positionData, "left") &&
+        (wnapp.style.left = positionData.left + "px");
+      Object.hasOwn(positionData, "right") &&
+        (wnapp.style.right = positionData.right + "px");
     }
   };
 
@@ -345,14 +363,36 @@ export function Floating({
 
     console.log("###", dim0, dim1);
     console.log("###eleDrag");
-    if (op == 0) setPos(pos0, pos1);
+    if (op == 0) setPos(calPosType(pos0, pos1, wnapp?.dataset.positions || ""));
     else {
       dim0 = Math.max(dim0, 300);
       dim1 = Math.max(dim1, 300);
       pos0 = posP[0] + Math.min(vec[0], 0) * (dim0 - dimP[0]);
       pos1 = posP[1] + Math.min(vec[1], 0) * (dim1 - dimP[1]);
-      setPos(pos0, pos1);
+      setPos(calPosType(pos0, pos1, wnapp?.dataset.positions || ""));
       setDim(dim0, dim1);
+    }
+
+    function calPosType(pos0: number, pos1: number, positions: string) {
+      let posData = {} as any;
+
+      if (positions.length === 0) {
+        console.log("hsshin", 1);
+        posData["y"] = pos0;
+        posData["x"] = pos1;
+        return;
+      }
+      if (wnapp) {
+        positions.includes("top") && (posData["top"] = pos0);
+        positions.includes("bottom") &&
+          (posData["bottom"] = window.innerHeight - pos0 - wnapp?.offsetHeight);
+        positions.includes("left") && (posData["left"] = pos1);
+        positions.includes("right") &&
+          (posData["right"] = window.innerWidth - pos1 - wnapp?.offsetWidth);
+        positions.includes("y") && (posData["y"] = pos0);
+        positions.includes("x") && (posData["x"] = pos1);
+      }
+      return posData;
     }
   };
 
@@ -417,12 +457,17 @@ export function Floating({
     if (ref.current) {
       if (context?.state.item[props.name]?.options?.position) {
         wnapp = ref.current;
-        const { y, x } = context?.state.item[props.name]?.options?.position(
+        const positionData = context?.state.item[props.name]?.options?.position(
           ref.current
         );
-        console.log("aa", x, y);
-
-        setPos(y, x);
+        console.log("aa", positionData);
+        wnapp.setAttribute(
+          `data-positions`,
+          Object.keys(positionData).join(",")
+        );
+        setPos(positionData);
+      } else {
+        setPos({ x: wnapp?.offsetLeft, y: wnapp?.offsetTop });
       }
     }
   }, []);

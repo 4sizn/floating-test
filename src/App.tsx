@@ -46,8 +46,7 @@ function SubApp() {
       {withAddFloating(() => (
         <div>MiniChat</div>
       ))} */}
-
-      {withAddFloating(
+      {/* {withAddFloating(
         (props) => {
           console.log("props2", props);
           return (
@@ -79,14 +78,21 @@ function SubApp() {
           resize: true,
           position: () => {
             return {
-              x: 15,
-              y: 155,
+              // x: 0,
+              // y: 0,
+              // right: 0,
+              // top: 0,
+              // left: 0,
+              // bottom: 0,
+              right: 0,
+              top: 0,
+              // bottom: 15,
+              // right: 155,
             };
           },
         }
-      )}
-
-      {withAddFloating(
+      )} */}
+      {/* {withAddFloating(
         (props) => (
           <MiniChat
             style={{
@@ -114,7 +120,7 @@ function SubApp() {
           },
           resize: true,
         }
-      )}
+      )} */}
       {withAddFloating(
         (props) => (
           <MiniChat
@@ -205,6 +211,40 @@ function SubApp() {
           },
           position: (el) => {
             return calEdgePosition(el, "ne");
+          },
+          resize: true,
+        }
+      )}
+      {withAddFloating(
+        () => (
+          <MiniChat
+            style={{
+              backgroundColor: "grey",
+            }}
+          />
+        ),
+        {
+          barComponent: (props) => {
+            return (
+              <div
+                css={{
+                  position: "absolute",
+                  width: "70%",
+                  backgroundColor: "black",
+                  zIndex: 1,
+                  opacity: 0.5,
+                }}
+                {...props}
+              >
+                bar
+              </div>
+            );
+          },
+          position: (el) => {
+            return {
+              right: 15,
+              bottom: 20,
+            };
           },
           resize: true,
         }
