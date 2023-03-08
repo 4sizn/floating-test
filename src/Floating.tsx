@@ -39,14 +39,23 @@ type FloatingStateContextType = {
 const FloatingStateContext =
   React.createContext<FloatingStateContextType | null>(null);
 
+type CoordXYZ = { x?: number; y?: number; z?: number };
+type CoordLeftTop = { left?: number; top?: number };
+type CoordRightTop = { right?: number; top?: number };
+type CoordLeftBottom = { left?: number; bottom?: number };
+type CoordRightBottom = { right?: number; bottom?: number };
+
+type Coord =
+  | CoordXYZ
+  | CoordLeftTop
+  | CoordRightTop
+  | CoordLeftBottom
+  | CoordRightBottom;
+
 type FloatingItemOptions = {
   resize?: boolean;
   barComponent?: (props: any) => React.ReactNode;
-  position?: (element: HTMLElement) => {
-    x?: number;
-    y?: number;
-    z?: number;
-  };
+  position?: (element: HTMLElement) => Coord;
   z?: number;
 };
 
