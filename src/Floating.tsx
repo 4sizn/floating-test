@@ -417,7 +417,7 @@ export function Floating({
     if (ref.current) {
       if (context?.state.item[props.name]?.options?.position) {
         wnapp = ref.current;
-        const { x, y } = context?.state.item[props.name]?.options?.position(
+        const { y, x } = context?.state.item[props.name]?.options?.position(
           ref.current
         );
         console.log("aa", x, y);
